@@ -126,7 +126,7 @@ func handleConnection(conn net.Conn, hosts lastSeen) {
 
 	jp := gjson.ParseBytes(buf)
 
-	jvalue := jp.Get("identity.hostname")
+	jvalue := jp.Get("identity.fullhostname")
 	if !jvalue.Exists() {
 		log.Println("Unable to read hostname from njmon json")
 		return
