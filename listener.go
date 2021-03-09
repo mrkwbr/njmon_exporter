@@ -55,8 +55,10 @@ func filesystems(hostname string, result gjson.Result) {
 		// Filesystem metrics
 		size := f.Get("size_mb").Float() * mb
 		free := f.Get("free_mb").Float() * mb
+		inode := f.Get("inode_percent").Float() / 100
 		filesystemSize.WithLabelValues(hostname, device, mount).Set(size)
 		filesystemFree.WithLabelValues(hostname, device, mount).Set(free)
+		filesystemInode.WithLabelValues(hostname, device, mount).Set(inode)
 	}
 }
 
@@ -169,6 +171,10 @@ func handleConnection(conn net.Conn, hosts lastSeen) {
 	cpuTotWait.WithLabelValues(hostname).Set(jp.Get("cpu_util.wait_pct").Float() / 100)
 	// cpu_logical
 	cpuLogical(hostname, jp.Get("cpu_logical"))
+	// cpu_loadavg
+	cpuLoadAvg1.WithLabelValues(hostname).Set(jp.Get("kernel.load_avg_1_min").Float())
+	cpuLoadAvg5.WithLabelValues(hostname).Set(jp.Get("kernel.load_avg_5_min").Float())
+	cpuLoadAvg15.WithLabelValues(hostname).Set(jp.Get("kernel.load_avg_15_min").Float())
 	// filesystems
 	filesystems(hostname, jp.Get("filesystems"))
 	// network_adapters

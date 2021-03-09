@@ -122,6 +122,28 @@ var (
 		},
 		[]string{"instance", "cpu"},
 	)
+	// CPU Load Average
+	cpuLoadAvg1 = prometheus.NewGaugeVec(
+		prometheus.GaugeOpts{
+			Name: "njmon_cpu_load1",
+			Help: "1 Minute Load Average",
+		},
+		[]string{"instance"},
+	)
+	cpuLoadAvg5 = prometheus.NewGaugeVec(
+		prometheus.GaugeOpts{
+			Name: "njmon_cpu_load5",
+			Help: "5 Minute Load Average",
+		},
+		[]string{"instance"},
+	)
+	cpuLoadAvg15 = prometheus.NewGaugeVec(
+		prometheus.GaugeOpts{
+			Name: "njmon_cpu_load15",
+			Help: "15 Minute Load Average",
+		},
+		[]string{"instance"},
+	)
 	// Filesystems
 	filesystemSize = prometheus.NewGaugeVec(
 		prometheus.GaugeOpts{
@@ -134,6 +156,13 @@ var (
 		prometheus.GaugeOpts{
 			Name: "njmon_filesystem_free",
 			Help: "Available filesystem space in Bytes",
+		},
+		[]string{"instance", "device", "mountpoint"},
+	)
+	filesystemInode = prometheus.NewGaugeVec(
+		prometheus.GaugeOpts{
+			Name: "njmon_filesystem_inode",
+			Help: "filesystem Inode utilization",
 		},
 		[]string{"instance", "device", "mountpoint"},
 	)
@@ -289,8 +318,12 @@ func init() {
 	prometheus.MustRegister(cpuLogSys)
 	prometheus.MustRegister(cpuLogUser)
 	prometheus.MustRegister(cpuLogWait)
+	prometheus.MustRegister(cpuLoadAvg1)
+	prometheus.MustRegister(cpuLoadAvg5)
+	prometheus.MustRegister(cpuLoadAvg15)
 	prometheus.MustRegister(filesystemSize)
 	prometheus.MustRegister(filesystemFree)
+	prometheus.MustRegister(filesystemInode)
 	prometheus.MustRegister(hostUp)
 	prometheus.MustRegister(memMax)
 	prometheus.MustRegister(memOnline)
