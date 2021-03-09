@@ -253,7 +253,7 @@ var (
 	)
 	memPagingSpaceUsed = prometheus.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "njmon_mem_paging_space_Used",
+			Name: "njmon_mem_paging_space_used",
 			Help: "Paging space used in Bytes",
 		},
 		[]string{"instance", "device"},
