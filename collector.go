@@ -251,6 +251,20 @@ var (
 		},
 		[]string{"instance"},
 	)
+	memPagingSpaceUsed = prometheus.NewGaugeVec(
+		prometheus.GaugeOpts{
+			Name: "njmon_mem_paging_space_Used",
+			Help: "Paging space used in Bytes",
+		},
+		[]string{"instance", "device"},
+	)
+	memPagingSpaceSize = prometheus.NewGaugeVec(
+		prometheus.GaugeOpts{
+			Name: "njmon_mem_paging_space_size",
+			Help: "Paging space total in Bytes",
+		},
+		[]string{"instance", "device"},
+	)
 	netPktRx = prometheus.NewGaugeVec(
 		prometheus.GaugeOpts{
 			Name: "njmon_net_pkt_rx_total",
@@ -337,6 +351,8 @@ func init() {
 	prometheus.MustRegister(memRealSystem)
 	prometheus.MustRegister(memRealTotal)
 	prometheus.MustRegister(memRealUser)
+	prometheus.MustRegister(memPagingSpaceUsed)
+	prometheus.MustRegister(memPagingSpaceSize)
 	prometheus.MustRegister(netBpsRx)
 	prometheus.MustRegister(netBpsTx)
 	prometheus.MustRegister(netPktRx)

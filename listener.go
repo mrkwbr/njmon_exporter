@@ -62,6 +62,15 @@ func filesystems(hostname string, result gjson.Result) {
 	}
 }
 
+func pagingspace(hostname string, result gjson.Result) {
+	for i, f := range result.Map() {
+		size := f.Get("mb_size").Float() * mb
+		used := f.Get("mb_used").Float() * mb
+		memPagingSpaceUsed.WithLabelValues(hostname, i).Set(used)
+		memPagingSpaceSize.WithLabelValues(hostname, i).Set(size)
+	}
+}
+
 // netAdapters iterates over the content of the njmon network_adapters data and
 // produces a set of metrics for each interface.
 func netAdapters(hostname string, result gjson.Result) {
@@ -177,6 +186,7 @@ func handleConnection(conn net.Conn, hosts lastSeen) {
 	cpuLoadAvg15.WithLabelValues(hostname).Set(jp.Get("kernel.load_avg_15_min").Float())
 	// filesystems
 	filesystems(hostname, jp.Get("filesystems"))
+	pagingspace(hostname, jp.Get("paging_spaces"))
 	// network_adapters
 	netAdapters(hostname, jp.Get("network_adapters"))
 }
