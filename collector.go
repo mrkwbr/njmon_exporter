@@ -166,6 +166,20 @@ var (
 		},
 		[]string{"instance", "device", "mountpoint"},
 	)
+	diskReadIO = prometheus.NewGaugeVec(
+		prometheus.GaugeOpts{
+			Name: "njmon_disk_read_bytes",
+			Help: "disk read rate in bytes per second",
+		},
+		[]string{"instance", "device"},
+	)
+	diskWriteIO = prometheus.NewGaugeVec(
+		prometheus.GaugeOpts{
+			Name: "njmon_disk_write_bytes",
+			Help: "disk write rate in bytes per second",
+		},
+		[]string{"instance", "device"},
+	)
 	// Memory
 	memOnline = prometheus.NewGaugeVec(
 		prometheus.GaugeOpts{
@@ -338,6 +352,8 @@ func init() {
 	prometheus.MustRegister(filesystemSize)
 	prometheus.MustRegister(filesystemFree)
 	prometheus.MustRegister(filesystemInode)
+	prometheus.MustRegister(diskReadIO)
+	prometheus.MustRegister(diskWriteIO)
 	prometheus.MustRegister(hostUp)
 	prometheus.MustRegister(memMax)
 	prometheus.MustRegister(memOnline)

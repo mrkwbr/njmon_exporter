@@ -71,6 +71,13 @@ func pagingspace(hostname string, result gjson.Result) {
 	}
 }
 
+func diskio(hostname string, result gjson.Result) {
+	for i, f := range result.Map() {
+		diskReadIO.WithLabelValues(hostname, i).Set(f.Get("read_mbps").Float())
+		diskWriteIO.WithLabelValues(hostname, i).Set(f.Get("write_mbps").Float())
+	}
+}
+
 // netAdapters iterates over the content of the njmon network_adapters data and
 // produces a set of metrics for each interface.
 func netAdapters(hostname string, result gjson.Result) {
@@ -187,6 +194,7 @@ func handleConnection(conn net.Conn, hosts lastSeen) {
 	// filesystems
 	filesystems(hostname, jp.Get("filesystems"))
 	pagingspace(hostname, jp.Get("paging_spaces"))
+	diskio(hostname, jp.Get("disks"))
 	// network_adapters
 	netAdapters(hostname, jp.Get("network_adapters"))
 }
