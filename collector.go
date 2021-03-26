@@ -6,6 +6,13 @@ import (
 
 var (
 	// AIX section
+	aixInfo = prometheus.NewGaugeVec(
+		prometheus.GaugeOpts{
+			Name: "njmon_aix_info",
+			Help: "AIX version information",
+		},
+		[]string{"instance", "version", "techlevel", "servicepack"},
+	)
 	aixVersion = prometheus.NewGaugeVec(
 		prometheus.GaugeOpts{
 			Name: "njmon_aix_version",
@@ -331,6 +338,7 @@ var (
 )
 
 func init() {
+	prometheus.MustRegister(aixInfo)
 	prometheus.MustRegister(aixVersion)
 	prometheus.MustRegister(aixTechLevel)
 	prometheus.MustRegister(aixServicePack)

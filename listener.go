@@ -156,9 +156,13 @@ func handleConnection(conn net.Conn, hosts lastSeen) {
 	uptimeDays := jp.Get("uptime.days").Float()
 	uptimeHours := jp.Get("uptime.hours").Float()
 	uptimeMins := jp.Get("uptime.minutes").Float()
+	version := jp.Get("server.aix_version").String()
+	techLevel := jp.Get("server.aix_technology_level").String()
+	servicePack := jp.Get("server.aix_service_pack").String()
 	uptimeSecs := (uptimeDays * 24 * 60 * 60) + (uptimeHours * 60 * 60) + (uptimeMins * 60)
 	systemUptime.WithLabelValues(hostname).Set(uptimeSecs)
 	// server
+	aixInfo.WithLabelValues(hostname, version, techLevel, servicePack).Set(1)
 	aixVersion.WithLabelValues(hostname).Set(jp.Get("server.aix_version").Float())
 	aixTechLevel.WithLabelValues(hostname).Set(jp.Get("server.aix_technology_level").Float())
 	aixServicePack.WithLabelValues(hostname).Set(jp.Get("server.aix_service_pack").Float())
