@@ -8,6 +8,7 @@ import (
 )
 
 var (
+	aixInfo        *prometheus.GaugeVec
 	aixServicePack *prometheus.GaugeVec
 	aixTechLevel   *prometheus.GaugeVec
 	aixVersion     *prometheus.GaugeVec
@@ -73,6 +74,14 @@ func initCollectors() {
 	log.Debugf("Default labels: %v", strings.Join(defaultLabels, ","))
 
 	// AIX section
+	aixInfo = prometheus.NewGaugeVec(
+		prometheus.GaugeOpts{
+			Name: "njmon_aix_info",
+			Help: "AIX version information",
+		},
+		append(defaultLabels, "version", "techlevel", "servicepack"),
+	)
+
 	aixVersion = prometheus.NewGaugeVec(
 		prometheus.GaugeOpts{
 			Name: "njmon_aix_version",
@@ -492,6 +501,7 @@ func initCollectors() {
 		defaultLabels,
 	)
 
+	prometheus.MustRegister(aixInfo)
 	prometheus.MustRegister(aixVersion)
 	prometheus.MustRegister(aixTechLevel)
 	prometheus.MustRegister(aixServicePack)

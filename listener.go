@@ -201,6 +201,10 @@ func (h *hostInfoMap) parseNJmonJSON(jp gjson.Result) {
 	uptimeSecs := (uptimeDays * 24 * 60 * 60) + (uptimeHours * 60 * 60) + (uptimeMins * 60)
 	systemUptime.WithLabelValues(hostname, instanceLabel).Set(uptimeSecs)
 	// server
+	version := jp.Get("server.aix_version").String()
+	techLevel := jp.Get("server.aix_technology_level").String()
+	servicePack := jp.Get("server.aix_service_pack").String()
+	aixInfo.WithLabelValues(hostname, instanceLabel, version, techLevel, servicePack).Set(1)
 	aixVersion.WithLabelValues(hostname, instanceLabel).Set(jp.Get("server.aix_version").Float())
 	aixTechLevel.WithLabelValues(hostname, instanceLabel).Set(jp.Get("server.aix_technology_level").Float())
 	aixServicePack.WithLabelValues(hostname, instanceLabel).Set(jp.Get("server.aix_service_pack").Float())
