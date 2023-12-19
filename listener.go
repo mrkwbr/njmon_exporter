@@ -170,7 +170,7 @@ func (h *hostInfoMap) connHandle(conn net.Conn) {
 
 // parseNJmonJSON takes a gjson result object and parses it into Prometheus metrics.
 func (h *hostInfoMap) parseNJmonJSON(jp gjson.Result) {
-	jvalue := jp.Get("identity.hostname")
+	jvalue := jp.Get("identity.fullhostname")
 	if !jvalue.Exists() {
 		log.Warn("Unable to read hostname from njmon json")
 		return
