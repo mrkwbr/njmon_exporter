@@ -35,6 +35,7 @@ var (
 	diskRead       *prometheus.GaugeVec
 	diskSize       *prometheus.GaugeVec
 	diskWrite      *prometheus.GaugeVec
+	filesystemFile *prometheus.GaugeVec
 	filesystemFree *prometheus.GaugeVec
 	filesystemSize *prometheus.GaugeVec
 	hostUp         *prometheus.GaugeVec
@@ -291,6 +292,13 @@ func initCollectors() {
 		},
 		append(defaultLabels, "device", "mountpoint"),
 	)
+	filesystemFile = prometheus.NewGaugeVec(
+		prometheus.GaugeOpts{
+			Name: "njmon_filesystem_files_used_percent",
+			Help: "Percentage used of filesystem inodes",
+		},
+		append(defaultLabels, "device", "mountpoint"),
+	)
 	// CPU Load Average
 	loadAvg1 = prometheus.NewGaugeVec(
 		prometheus.GaugeOpts{
@@ -513,6 +521,7 @@ func initCollectors() {
 	prometheus.MustRegister(diskWrite)
 	prometheus.MustRegister(filesystemSize)
 	prometheus.MustRegister(filesystemFree)
+	prometheus.MustRegister(filesystemFile)
 	prometheus.MustRegister(hostUp)
 	prometheus.MustRegister(loadAvg1)
 	prometheus.MustRegister(loadAvg5)

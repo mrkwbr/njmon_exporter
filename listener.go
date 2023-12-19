@@ -76,8 +76,10 @@ func filesystems(hostname, instanceLabel string, result gjson.Result) {
 		// Filesystem metrics
 		size := f.Get("size_mb").Float() * mb
 		free := f.Get("free_mb").Float() * mb
+		inode := f.Get("inode_percent").Float() / 100
 		filesystemSize.WithLabelValues(hostname, instanceLabel, device, mount).Set(size)
 		filesystemFree.WithLabelValues(hostname, instanceLabel, device, mount).Set(free)
+		filesystemFile.WithLabelValues(hostname, instanceLabel, device, mount).Set(inode)
 	}
 }
 
