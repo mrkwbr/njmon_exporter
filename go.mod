@@ -1,4 +1,4 @@
-module github.com/crooks/njmon_exporter
+module github.com/mrkwbr/njmon_exporter
 
 go 1.16
 

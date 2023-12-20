@@ -7,8 +7,8 @@ import (
 	"github.com/Masterminds/log-go"
 	"github.com/crooks/jlog"
 	loglevel "github.com/crooks/log-go-level"
-	"github.com/crooks/njmon_exporter/config"
 	"github.com/crooks/strmatch"
+	"github.com/mrkwbr/njmon_exporter/config"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
