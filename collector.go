@@ -53,6 +53,8 @@ var (
 	memPgspFree    *prometheus.GaugeVec
 	memPgspRsvd    *prometheus.GaugeVec
 	memPgspTotal   *prometheus.GaugeVec
+	memPgspSize    *prometheus.GaugeVec
+	memPgspUsed    *prometheus.GaugeVec
 	memRealFree    *prometheus.GaugeVec
 	memRealInUse   *prometheus.GaugeVec
 	memRealPinned  *prometheus.GaugeVec
@@ -380,6 +382,20 @@ func initCollectors() {
 		},
 		defaultLabels,
 	)
+	memPgspSize = prometheus.NewGaugeVec(
+		prometheus.GaugeOpts{
+			Name: "njmon_mem_paging_space_size",
+			Help: "Paging space total in Bytes",
+		},
+		defaultLabels,
+	)
+	memPgspUsed = prometheus.NewGaugeVec(
+		prometheus.GaugeOpts{
+			Name: "njmon_mem_paging_space_used",
+			Help: "Paging space used in Bytes",
+		},
+		defaultLabels,
+	)
 	memRealFree = prometheus.NewGaugeVec(
 		prometheus.GaugeOpts{
 			Name: "njmon_mem_real_free",
@@ -546,6 +562,8 @@ func initCollectors() {
 	prometheus.MustRegister(memPgspFree)
 	prometheus.MustRegister(memPgspRsvd)
 	prometheus.MustRegister(memPgspTotal)
+	prometheus.MustRegister(memPgspSize)
+	prometheus.MustRegister(memPgspUsed)
 	prometheus.MustRegister(memRealFree)
 	prometheus.MustRegister(memRealInUse)
 	prometheus.MustRegister(memRealPinned)

@@ -121,6 +121,16 @@ func memPages(hostname, instanceLabel string, result gjson.Result) {
 	}
 }
 
+// pagingSpaces iterates through the njmon paging_spaces and writes size and used for each.
+func pagingSpaces(hostname, instanceLabel string, result gjson.Result) {
+	for i, f := range result.Map() {
+		size := f.Get("mb_size").Float() * mb
+		used := f.Get("mb_used").Float() * mb
+		memPgspSize.WithLabelValues(hostname, instanceLabel, i).Set(size)
+		memPgspUsed.WithLabelValues(hostname, instanceLabel, i).Set(used)
+	}
+}
+
 // clockDiff returns the difference (in seconds) between a supplied timestamp and local UTC
 func clockDiff(timestamp string) float64 {
 	/*
@@ -252,4 +262,7 @@ func (h *hostInfoMap) parseNJmonJSON(jp gjson.Result) {
 	netAdapters(hostname, instanceLabel, jp.Get("network_adapters"))
 	// memory_pages
 	memPages(hostname, instanceLabel, jp.Get("memory_page"))
+	// paging_spaces
+	pagingSpaces(hostname, instanceLabel, jp.Get("paging_spaces"))
+
 }
