@@ -387,14 +387,14 @@ func initCollectors() {
 			Name: "njmon_mem_paging_space_size",
 			Help: "Paging space total in Bytes",
 		},
-		defaultLabels,
+		append(defaultLabels, "device"),
 	)
 	memPgspUsed = prometheus.NewGaugeVec(
 		prometheus.GaugeOpts{
 			Name: "njmon_mem_paging_space_used",
 			Help: "Paging space used in Bytes",
 		},
-		defaultLabels,
+		append(defaultLabels, "device"),
 	)
 	memRealFree = prometheus.NewGaugeVec(
 		prometheus.GaugeOpts{
